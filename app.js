@@ -75,9 +75,9 @@ app.post('/api/create_user', (req,res)=>{
 // console.log(`salt: ${salt}`);
 // console.log('bcrypt: ' + hash);
 
-// bcrypt.compare('pass123', hash, function(err, result){
-//  console.log(result);
-// });
+bcrypt.compare('pass123', hash, function(err, result){
+ console.log(result);
+});
 
 const { v4: uuidv4 } = require('uuid');
 //generate UUID
