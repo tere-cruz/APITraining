@@ -12,57 +12,60 @@ app.use(express.json());
 //parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
+const route = require('./modules/user_module/route');
+app.use('/api', route);
+
 // Start the server and have it listen on the defined port
 // When the server is successfully running, log a message to the console
 app.listen(port, ()=>{
     console.log(`Server running at port ${port}`);
 })
 
-//GET without parameters
-// Define a route handler for GET requests to the '/api/get_all_users' endpoint
-app.get('/api/get_all_users', (req,res)=>{
-    //Create a variable and assign a value
-    var username = "Kalilea Kalileo";
-    // Send a JSON response back to the client with the username key and its value
-    res.json({ username });
-});
+// //GET without parameters
+// // Define a route handler for GET requests to the '/api/get_all_users' endpoint
+// app.get('/api/get_all_users', (req,res)=>{
+//     //Create a variable and assign a value
+//     var username = "Kalilea Kalileo";
+//     // Send a JSON response back to the client with the username key and its value
+//     res.json({ username });
+// });
 
-//GET using req.params with route wildcard
-// Define a GET route for the path '/api/get_user/:id/:username/:email'
-app.get('/api/get_user/:id/:username/:email', (req,res)=>{
- // Access parameters from the URL and Variables
-    var id       = req.params.id;
-    var username = req.params.username;
-    var email    = req.params.email;
+// //GET using req.params with route wildcard
+// // Define a GET route for the path '/api/get_user/:id/:username/:email'
+// app.get('/api/get_user/:id/:username/:email', (req,res)=>{
+//  // Access parameters from the URL and Variables
+//     var id       = req.params.id;
+//     var username = req.params.username;
+//     var email    = req.params.email;
 
-    //Payload/JavaScript Object 
-    var user = {
-        "id":id,
-        "username":username,
-        "email":email,
-    }
-    // Send a JSON response to the client containing the 'user' object
-    res.json(user);
-});
+//     //Payload/JavaScript Object 
+//     var user = {
+//         "id":id,
+//         "username":username,
+//         "email":email,
+//     }
+//     // Send a JSON response to the client containing the 'user' object
+//     res.json(user);
+// });
 
-// Define a POST route for the path '/api/create_user'
-app.post('/api/create_user', (req,res)=>{
-    // Log the entire body of the incoming request to the console
-    // Useful for debugging to see what data was sent from the client
-    console.log(req.body);
+// // Define a POST route for the path '/api/create_user'
+// app.post('/api/create_user', (req,res)=>{
+//     // Log the entire body of the incoming request to the console
+//     // Useful for debugging to see what data was sent from the client
+//     console.log(req.body);
 
-    //extract from the request body and assign it to variables
-    var email    = req.body.email;
-    var username = req.body.username;
+//     //extract from the request body and assign it to variables
+//     var email    = req.body.email;
+//     var username = req.body.username;
     
-    //container for extracted date
-    var user_payload = {
-        "email":email,
-        "username":username,
-    } 
-    // Send the 'user_payload' object back to the client as a JSON response
-    res.json(user_payload);
-});
+//     //container for extracted date
+//     var user_payload = {
+//         "email":email,
+//         "username":username,
+//     } 
+//     // Send the 'user_payload' object back to the client as a JSON response
+//     res.json(user_payload);
+// });
 // // Import the 'bcrypt' library for hashing passwords
 // const bcrypt = require('bcrypt');
 
