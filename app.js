@@ -1,25 +1,27 @@
 // Import the Express library, which is a minimal and flexible Node.js web application framework
-const express = require('express');
+const express = require("express");
 
 // Create an instance of an Express application
 const app = express();
 
 // Define the port number on which the server will listen for incoming requests
 const port = 8082;
+//Define host
+const host = "0.0.0.0";
 
 //parse application/json
 app.use(express.json());
 //parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
-const route = require('./modules/user_module/route');
-app.use('/api', route);
+const route = require("./modules/user_module/route");
+app.use("/api", route);
 
 // Start the server and have it listen on the defined port
 // When the server is successfully running, log a message to the console
-app.listen(port, ()=>{
-    console.log(`Server running at port ${port}`);
-})
+app.listen(port, host, () => {
+  console.log(`Server running at http://${host}:${port}`);
+});
 
 // //GET without parameters
 // // Define a route handler for GET requests to the '/api/get_all_users' endpoint
@@ -38,7 +40,7 @@ app.listen(port, ()=>{
 //     var username = req.params.username;
 //     var email    = req.params.email;
 
-//     //Payload/JavaScript Object 
+//     //Payload/JavaScript Object
 //     var user = {
 //         "id":id,
 //         "username":username,
@@ -57,12 +59,12 @@ app.listen(port, ()=>{
 //     //extract from the request body and assign it to variables
 //     var email    = req.body.email;
 //     var username = req.body.username;
-    
+
 //     //container for extracted date
 //     var user_payload = {
 //         "email":email,
 //         "username":username,
-//     } 
+//     }
 //     // Send the 'user_payload' object back to the client as a JSON response
 //     res.json(user_payload);
 // });
@@ -82,8 +84,29 @@ app.listen(port, ()=>{
 //  console.log(result);
 // });
 
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 //generate UUID
 const random_uuid = uuidv4();
 //Print UUID
 console.log(random_uuid);
+
+const { sign } = require("jsonwebtoken");
+require("dotenv").config();
+
+app.get("/api/generate_token", (req, res) => {
+  //Initialize Payload
+  const payload = {
+    user_id: "01",
+    full_name: "Aldous",
+    role: "Admin",
+  };
+  //Initialize Secret Key
+  const secret_key = process.env.SECRET_KEY;
+
+  const option = {
+    expiresIn: "5m",
+  };
+  //generate jwt token
+  const accessToken = sign(payload, secret_key, option);
+  res.status(200).json({ access_token: accessToken });
+});
